@@ -2,13 +2,13 @@
 
 Kubernetes와 ArgoCD를 활용하여 Git Repository의 Kubernetes Manifest를 기준으로 애플리케이션 배포 상태를 자동으로 관리하는 GitOps 프로젝트입니다.
 
-## Project Overview
+## 1. Project Overview
 
 Kubernetes 환경에서 애플리케이션의 Deployment 설정을 Git으로 관리하고, ArgoCD를 통해 Git Repository와 Kubernetes 클러스터의 상태를 지속적으로 동기화하도록 구성했습니다.
 
 Git의 Manifest 변경을 기준으로 Kubernetes 리소스가 자동으로 반영되도록 구성하여 GitOps 기반의 배포 및 상태 관리 과정을 구현했습니다.
 
-## Architecture
+## 2. Architecture
 
 ```text
 Developer
@@ -30,7 +30,7 @@ Kubernetes Cluster
     └── Pods
 ```
 
-## Environment
+## 3. Environment
 
 | Category                | Technology     |
 | ----------------------- | -------------- |
@@ -42,7 +42,7 @@ Kubernetes Cluster
 | Application             | Nginx          |
 | Cluster                 | devops-cluster |
 
-## Kubernetes Cluster
+## 4. Kubernetes Cluster
 
 Kind를 사용하여 Kubernetes 클러스터를 구성했습니다.
 
@@ -66,7 +66,7 @@ kubectl get nodes
 
 Kind로 구성한 Kubernetes Cluster의 Control Plane과 Worker Node가 모두 `Ready` 상태로 동작하는 것을 확인했습니다.
 
-## Project Structure
+## 5. Project Structure
 
 ```text
 kubernetes-argocd-gitops
@@ -79,7 +79,7 @@ kubernetes-argocd-gitops
 └── README.md
 ```
 
-## ArgoCD Installation
+## 6. ArgoCD Installation
 
 ArgoCD Namespace를 생성합니다.
 
@@ -100,7 +100,7 @@ ArgoCD Pod 상태를 확인합니다.
 kubectl get pods -n argocd
 ```
 
-## ArgoCD UI
+## 7. ArgoCD UI
 
 ArgoCD Server에 Port Forward를 설정합니다.
 
@@ -116,7 +116,7 @@ https://localhost:8443
 
 ArgoCD UI에서 Application의 Sync 상태와 Kubernetes 리소스 상태를 확인할 수 있습니다.
 
-## GitOps Application
+## 8. GitOps Application
 
 ArgoCD Application은 다음 GitHub Repository를 바라보도록 구성했습니다.
 
@@ -141,7 +141,7 @@ Git Repository의 `k8s` 디렉터리에 있는 Kubernetes Manifest를 기준으�
 
 ArgoCD Application이 Git Repository와 정상적으로 동기화되어 `Synced`, `Healthy` 상태로 동작하는 것을 확인했습니다.
 
-## Deployment
+## 9. Deployment
 
 애플리케이션 Deployment는 Kubernetes Manifest를 통해 관리합니다.
 
@@ -157,7 +157,7 @@ kubectl get deployment
 kubectl get pods
 ```
 
-## GitOps Synchronization Test
+## 10. GitOps Synchronization Test
 
 GitOps 동작을 확인하기 위해 Deployment의 Replica 수를 변경했습니다.
 
@@ -185,7 +185,7 @@ git push origin main
 
 ArgoCD가 Git Repository의 변경 사항을 감지하고 Kubernetes Cluster에 변경 사항을 Sync합니다.
 
-### GitOps Deployment
+### 10.1 GitOps Deployment
 
 <img width="1319" height="831" alt="image" src="https://github.com/user-attachments/assets/77c6b218-ba3d-47be-a2b1-4d8bf9995a05" />
 
@@ -204,7 +204,7 @@ NAME            READY   UP-TO-DATE   AVAILABLE
 my-devops-app   5/5     5            5
 ```
 
-## GitOps Reconciliation Test
+## 11. GitOps Reconciliation Test
 
 GitOps의 핵심 기능인 Desired State와 Actual State의 일치 과정을 확인했습니다.
 
@@ -232,12 +232,12 @@ Kubernetes
 replicas: 3
 ```
 
-### ArgoCD Reconciliation
+### 11.1 ArgoCD Reconciliation
 
 
 Kubernetes의 실제 상태와 Git Repository의 Desired State가 달라졌을 때 ArgoCD가 변경 사항을 감지하고 다시 동기화하는 과정을 확인했습니다.
 
-## Kubernetes Application
+## 12. Kubernetes Application
 
 Kubernetes Service를 통해 애플리케이션을 관리합니다.
 
@@ -247,7 +247,7 @@ kubectl get service
 
 현재 애플리케이션은 Kubernetes Cluster 내부에서 Service를 통해 접근하도록 구성했습니다.
 
-## GitHub Repository
+## 13. GitHub Repository
 
 Kubernetes Manifest는 GitHub Repository에서 버전 관리합니다.
 
@@ -262,7 +262,7 @@ kubernetes-argocd-gitops
 
 GitHub Repository에서 Kubernetes Manifest와 변경 이력을 관리하여 Kubernetes 설정 변경 사항을 추적할 수 있도록 구성했습니다.
 
-## Project Goals
+## 14. Project Goals
 
 * Kubernetes 기반 애플리케이션 배포 경험
 * ArgoCD 설치 및 운영 경험
@@ -273,7 +273,7 @@ GitHub Repository에서 Kubernetes Manifest와 변경 이력을 관리하여 Kub
 * ArgoCD Reconciliation 동작 검증
 * Kubernetes Desired State 관리 경험
 
-## What I Learned
+## 15. What I Learned
 
 * Kubernetes Deployment와 Pod 관리
 * Kubernetes Service 구성
