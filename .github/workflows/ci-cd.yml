@@ -1,0 +1,102 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'k8s/deployment.yaml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ci-cd-main
+  cancel-in-progress: true
+
+jobs:
+  docker-build-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t dydcjsrjaror/my-devops-app:${{ github.sha }} \
+            -t dydcjsrjaror/my-devops-app:latest \
+            ./app
+
+      - name: Test Docker image
+        run: |
+          docker run -d \
+            --name test-container \
+            -p 8080:80 \
+            dydcjsrjaror/my-devops-app:${{ github.sha }}
+
+          sleep 5
+
+          curl http://localhost:8080
+
+          docker stop test-container
+          docker rm test-container
+
+      - name: Push Docker image
+        run: |
+          docker push dydcjsrjaror/my-devops-app:${{ github.sha }}
+          docker push dydcjsrjaror/my-devops-app:latest
+
+      - name: Update Kubernetes image tag
+        run: |
+          sed -i "s|image: dydcjsrjaror/my-devops-app:.*|image: dydcjsrjaror/my-devops-app:${{ github.sha }}|" k8s/deployment.yaml
+
+      - name: Commit and push Kubernetes manifest
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add k8s/deployment.yaml
+
+          if git diff --cached --quiet; then
+            echo "No Kubernetes manifest changes"
+            exit 0
+          fi
+
+          git commit -m "Update image to ${{ github.sha }} [skip ci]"
+
+          git fetch origin main
+
+          git rebase origin/main
+
+          git push origin HEAD:main
+
+      - name: Deploy to TEST69
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          port: 51004
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            docker pull dydcjsrjaror/my-devops-app:${{ github.sha }}
+
+            docker stop my-devops-app || true
+            docker rm my-devops-app || true
+
+            docker run -d \
+              --name my-devops-app \
+              -p 8080:80 \
+              dydcjsrjaror/my-devops-app:${{ github.sha }}
+
+            docker ps
