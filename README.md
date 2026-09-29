@@ -257,7 +257,8 @@ kubernetes-argocd-gitops
 
 ### GitHub Repository
 
-![GitHub Repository](docs/screenshots/github-repository.png)
+<img width="938" height="708" alt="image" src="https://github.com/user-attachments/assets/12e49d73-1a06-43e0-af9f-d307f931a18c" />
+
 
 GitHub Repository에서 Kubernetes Manifest와 변경 이력을 관리하여 Kubernetes 설정 변경 사항을 추적할 수 있도록 구성했습니다.
 
