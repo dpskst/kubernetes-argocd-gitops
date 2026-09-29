@@ -61,7 +61,8 @@ kubectl get nodes
 
 ### Kubernetes Nodes
 
-![Kubernetes Nodes](docs/screenshots/kubernetes-nodes.png)
+<img width="564" height="84" alt="image" src="https://github.com/user-attachments/assets/7c350dc5-7790-49a9-b1dc-470604bb59a7" />
+
 
 Kind로 구성한 Kubernetes Cluster의 Control Plane과 Worker Node가 모두 `Ready` 상태로 동작하는 것을 확인했습니다.
 
@@ -135,7 +136,8 @@ Git Repository의 `k8s` 디렉터리에 있는 Kubernetes Manifest를 기준으�
 
 ### ArgoCD Application
 
-![ArgoCD Application](docs/screenshots/argocd-application.png)
+<img width="713" height="586" alt="image" src="https://github.com/user-attachments/assets/4b14d5e5-26a2-485c-999b-5bc8d5b77471" />
+
 
 ArgoCD Application이 Git Repository와 정상적으로 동기화되어 `Synced`, `Healthy` 상태로 동작하는 것을 확인했습니다.
 
@@ -185,7 +187,8 @@ ArgoCD가 Git Repository의 변경 사항을 감지하고 Kubernetes Cluster에 
 
 ### GitOps Deployment
 
-![Kubernetes Pods](docs/screenshots/kubernetes-pods-5.png)
+<img width="1319" height="831" alt="image" src="https://github.com/user-attachments/assets/77c6b218-ba3d-47be-a2b1-4d8bf9995a05" />
+
 
 Git Repository의 Replica 설정 변경이 ArgoCD를 통해 Kubernetes에 반영되어 `my-devops-app` Pod 5개가 실행되는 것을 확인했습니다.
 
@@ -231,7 +234,6 @@ replicas: 3
 
 ### ArgoCD Reconciliation
 
-![ArgoCD Reconciliation](docs/screenshots/argocd-reconciliation.png)
 
 Kubernetes의 실제 상태와 Git Repository의 Desired State가 달라졌을 때 ArgoCD가 변경 사항을 감지하고 다시 동기화하는 과정을 확인했습니다.
 
